@@ -1,0 +1,27 @@
+<%- include('partials/top') %>
+<main>
+  <h1>Contact Me</h1>
+  <form method="POST" action="/contact/submit">
+      <label>First Name:</label>
+      <br>
+      <input type="text" name="firstName">
+      <br>
+
+      <label>Last Name:</label>
+      <br>
+      <input type="text" name="lastName">
+      <br>
+
+      <label>Email:</label>
+      <br>
+      <input type="text" name="email">
+      <br>
+
+      <label>Comments:</label>
+      <br>
+      <textarea name="comments"></textarea>
+      <br>
+      <input type="submit" value="SUBMIT">
+  </form>
+</main>
+<%- include('partials/bottom') %>
