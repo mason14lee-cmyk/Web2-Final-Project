@@ -1,5 +1,15 @@
 <%- include('partials/top') %>
 <main>
-<h1>TODO: The Blog List Page</h1>
+  <h1>Blog Posts</h1>
+  <ul>
+  <% for (let i = 0; i < posts.length; i++) { %>
+      <li>
+         <a href="<%=posts[i].link%>"><%=posts[i].title%></a>
+         <p><%=posts[i].description%></p>
+         <p><%=posts[i].author%></p>
+         <p><%=posts[i].published%></p>
+      </li>
+  <% } %>
+  </ul>
 </main>
 <%- include('partials/bottom') %>

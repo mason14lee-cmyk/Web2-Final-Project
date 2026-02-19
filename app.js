@@ -4,6 +4,8 @@ const port = 8080; // We'll run the server on port 8080
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const {getBlogList, convertMarkdown} = require("./modules/markdown-helpers")
+const pathToBlogFolder = __dirname + '/blog/';
 // MIDDLEWARE
 
 // allow the app to get data for form submits
@@ -25,13 +27,29 @@ app.get("/blog/:post", (req, res) => {
 });
 
 app.get('/blog', (req, res)=>{
+  const blogList = getBlogList(pathToBlogFolder);
   res.render('blog-list', {
-    title: "Blog List"
+    title: "Blog",
+    posts: blogList
   });
 });
 
 app.get("/blog/:post", (req, res) => {
-   res.send("The <b>:post</b> param is set to: " +  req.params.post);
+  try{
+    const pathToFile = pathToBlogFolder + req.params.post + ".md";
+    console.log("Markdown file: " + pathToFile);
+    const obj = convertMarkdown(pathToFile);
+    res.render('blog-post', {
+       title: obj.data.title,
+       description: obj.data.description,
+       author: obj.data.author,
+       published: obj.data.published,
+       content: obj.html
+    });
+  }catch(error){
+    console.log(error);
+    res.status(404).redirect("/404");
+  }
 });
 
 app.get('/contact', (req, res) => {
