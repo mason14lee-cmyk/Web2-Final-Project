@@ -20,15 +20,21 @@
 	<div class="container header-inner">
 
 		<h1 class="logo">
-			<a href="/">RetroBlog</a>
+			<a href="/">Mason's BlogSite</a>
 		</h1>
-
-		<button class="nav-toggle"
-		        aria-expanded="false"
-		        aria-controls="primary-nav">
-			☰
-			<span class="visually-hidden">Menu</span>
-		</button>
+		<div class="waffle-menu-container">
+  <button id="waffle-button" aria-label="Open menu" aria-haspopup="true" aria-expanded="false">
+    <span class="waffle-icon">☰</span> <!-- You can replace with an SVG or icon font -->
+  </button>
+  <ul id="waffle-menu" class="waffle-menu" role="menu" aria-hidden="true">
+    <li role="none"><a role="menuitem" href="/" tabindex="-1">Home</a></li>
+    <li role="none"><a role="menuitem" href="/blog" tabindex="-1">Blog</a></li>
+    <li role="none"><a role="menuitem" href="/contact" tabindex="-1">Contact</a></li>
+  </ul>
+</div>
+		<button id="dark-mode-toggle" aria-label="Toggle dark mode">
+  🌓
+</button>
 
 		<nav id="primary-nav" aria-label="Main navigation">
 			<ul class="nav">

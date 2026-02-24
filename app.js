@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require("path");
 const port = 8080; // We'll run the server on port 8080
 debugger
@@ -8,6 +9,10 @@ const app = express();
 const bodyParser = require('body-parser');
 const {getBlogList, convertMarkdown} = require("./modules/markdown-helpers")
 const pathToBlogFolder = __dirname + '/blog/';
+const fs = require("fs");
+const readingTime = require("reading-time");
+
+// etc...
 // MIDDLEWARE
 app.use((req, res, next) => {
   res.locals.year = new Date().getFullYear();
@@ -42,6 +47,11 @@ app.set('view engine', 'ejs');
 
 // ROUTES
 
+const newsletterRoute = require("./routes/newsletter");
+
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/newsletter", newsletterRoute);
 
 app.get("/blog", (req, res) => {
   const posts = getBlogList(pathToBlogFolder);
@@ -106,41 +116,68 @@ const pathToFile = path.join(
 
 app.get('/contact', (req, res) => {
   res.render('contact', {
-     title: "Contact Me"
+    title: "Contact",
+    current: "contact",
+    errors: {},          // default empty object
+    old: {}              // default empty object
   });
 });
 
 app.post('/contact/submit', (req, res) => {
 
-  // import the helper functions that we need
-  const {isValidContactFormSubmit, sendEmailNotification} = require("./modules/contact-helpers");
+  // import the helper functions
+  const { isValidContactFormSubmit, sendEmailNotification } = require("./modules/contact-helpers");
 
-  // Destructure the req.body object into variables
-  const {firstName, lastName, email, comments} = req.body;
+  // Destructure form data
+  const { firstName, lastName, email, comments } = req.body;
 
-  // Validate the variables
-  if(isValidContactFormSubmit(firstName, lastName, email, comments)){
-    // Everything is valid, so send an email to YOUR email address with the data entered into the form
-    const message = `From: ${firstName} ${lastName}\n
-                    Email: ${email}\n
-                    Message: ${comments}`;
+  // Build an errors object
+  const errors = {};
 
-    sendEmailNotification(message, (err, info) => {
-  if(err){
-    console.log(err);
-    res.status(500).send("There was an error sending the email");
-  }else{
-    // Render a template that confirms the contact form info was recieved:
+  if (!firstName || firstName.trim() === "") errors.firstName = "First name is required";
+  if (!lastName || lastName.trim() === "") errors.lastName = "Last name is required";
+  
+  const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/i;
+  if (!email || email.trim() === "") {
+    errors.email = "Email is required";
+  } else if (!emailPattern.test(email)) {
+    errors.email = "Enter a valid email address";
+  }
+
+  if (!comments || comments.trim() === "") errors.comments = "Comments cannot be empty";
+
+  // If there are errors, re-render the contact form with errors + old values
+  if (Object.keys(errors).length > 0) {
+    return res.render('contact', {
+      title: "Contact",
+      errors,
+      old: { firstName, lastName, email, comments },
+      current: "contact"
+    });
+  }
+
+  // If the form is valid, send the email
+  const message = `From: ${firstName} ${lastName}\n
+Email: ${email}\n
+Message: ${comments}`;
+
+  sendEmailNotification(message, (err, info) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).render('contact', {
+        title: "Contact",
+        errors: { send: "There was an error sending your message. Please try again later." },
+        old: { firstName, lastName, email, comments },
+        current: "contact"
+      });
+    }
+
+    // Success → render confirmation page
     res.render("default-layout", {
       title: "Contact Confirmation",
       content: "<h2>Thank you for contacting me!</h2><p>I'll get back to you ASAP.</p>"
-    })
-  }
-});
-
-  }else{
-    res.status(400).send("Invalid request - data is not valid")
-  }
+    });
+  });
 
 });
 

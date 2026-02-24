@@ -8,12 +8,20 @@
 <main>
   <% if (posts && posts.length > 0) { %>
 
+  
+    <div class="blog-controls">
+  <input type="text" id="blog-search" placeholder="Search posts...">
+  <p id="post-count">Showing <%= posts.length %> posts</p>
+</div>
     <section class="post-grid" aria-label="Blog post list">
 
       <% posts.forEach(post => { %>
-        <article class="card">
+        <article class="card" data-published="<%= post.published %>" data-readtime="<%= post.readTime || 5 %>">
 
-          <!-- Make the whole card clickable -->
+          <% if (post.featured) { %>
+            <div class="featured-banner">Featured</div>
+          <% } %>
+
           <a href="<%= post.link %>" class="card-link">
 
             <% if (post.image) { %>
@@ -29,19 +37,24 @@
 
               <h2 class="card-title"><%= post.title %></h2>
 
-              <p class="card-excerpt">
-                <%= post.excerpt || post.description %>
-              </p>
+              <p class="card-excerpt"><%= post.excerpt || post.description %></p>
 
               <p class="blog-meta">
                 <span>By <%= post.author || 'Unknown' %></span> •
                 <span><%= post.published || '' %></span>
               </p>
 
+              <% if (post.tags && post.tags.length > 0) { %>
+                <div class="tags">
+                  <% post.tags.forEach(tag => { %>
+                    <span class="tag"><%= tag %></span>
+                  <% }) %>
+                </div>
+              <% } %>
+
               <span class="read-more">Read article →</span>
 
             </div>
-
           </a>
 
         </article>

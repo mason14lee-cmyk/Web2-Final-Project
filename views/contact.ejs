@@ -1,27 +1,32 @@
 <%- include('partials/top') %>
+
 <main>
   <h1>Contact Me</h1>
+
   <form method="POST" action="/contact/submit">
+
       <label>First Name:</label>
-      <br>
-      <input type="text" name="firstName">
-      <br>
+      <input type="text" name="firstName" value="<%= old ? old.firstName : '' %>">
+      <small class="error"><%= errors ? errors.firstName : '' %></small>
 
       <label>Last Name:</label>
-      <br>
-      <input type="text" name="lastName">
-      <br>
+      <input type="text" name="lastName" value="<%= old ? old.lastName : '' %>">
+      <small class="error"><%= errors ? errors.lastName : '' %></small>
 
       <label>Email:</label>
-      <br>
-      <input type="text" name="email">
-      <br>
+      <input type="text" name="email" value="<%= old ? old.email : '' %>">
+      <small class="error"><%= errors ? errors.email : '' %></small>
 
       <label>Comments:</label>
-      <br>
-      <textarea name="comments"></textarea>
-      <br>
+      <textarea name="comments"><%= old ? old.comments : '' %></textarea>
+      <small class="error"><%= errors ? errors.comments : '' %></small>
+
+      <% if (errors && errors.send) { %>
+        <p class="error"><%= errors.send %></p>
+      <% } %>
+
       <input type="submit" value="SUBMIT">
   </form>
 </main>
+
 <%- include('partials/bottom') %>
