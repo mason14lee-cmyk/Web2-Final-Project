@@ -1,6 +1,50 @@
-</div><!-- end of #content div-->
-		<footer>
-			Footer
-		</footer>
-	</body>
+</main>
+
+<footer class="site-footer">
+
+	<div class="container footer-grid">
+
+		<section class="footer-about">
+			<h2>About This Blog</h2>
+			<p>
+				A retro-modern space for thoughts on design, development,
+				and accessibility.
+			</p>
+		</section>
+
+		<nav aria-label="Footer navigation">
+			<h2>Explore</h2>
+			<ul class="footer-links">
+				<li><a href="/">Home</a></li>
+				<li><a href="/blog">Blog</a></li>
+				<li><a href="/contact">Contact</a></li>
+			</ul>
+		</nav>
+
+		<section class="footer-newsletter">
+			<h2>Newsletter</h2>
+
+			<form action="/subscribe" method="post">
+				<label for="email" class="visually-hidden">Email address</label>
+				<input id="email" name="email" type="email" placeholder="Your email" required>
+				<button class="btn">Subscribe</button>
+			</form>
+
+		</section>
+
+	</div>
+
+	<div class="sub-footer container">
+
+		<p>© <%= new Date().getFullYear() %> RetroBlog</p>
+
+		<button id="backToTop" class="back-to-top">
+			↑ Top
+		</button>
+
+	</div>
+
+</footer>
+
+</body>
 </html>

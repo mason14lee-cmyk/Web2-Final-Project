@@ -1,6 +1,46 @@
 <%- include('partials/top') %>
-<main>
+
+<section class="home-hero">
   <h1>Welcome to My Website</h1>
-  <p>This page will soon show a list of links to blog posts that I have written (in markdown files)</p>
-</main>
+  <p class="hero-subtitle">
+    Thoughts on design, development, and accessibility.
+  </p>
+</section>
+
+<section class="home-intro">
+  <p>
+    This page will soon show a list of links to blog posts that I have written in markdown files.
+  </p>
+</section>
+
+<!-- Featured / Latest Posts -->
+<% if (typeof posts !== 'undefined' && posts.length > 0) { %>
+<section class="featured-posts">
+  <h2>Latest Posts</h2>
+  <div class="post-grid">
+
+    <% posts.slice(0, 3).forEach(post => { %>
+      <article class="card">
+        <% if (post.image) { %>
+          <a href="/blog/<%= post.slug %>" class="card-image-link">
+            <img src="<%= post.image %>" alt="">
+          </a>
+        <% } %>
+        <div class="card-content">
+          <p class="meta">
+            <span><%= post.category %></span> • <span><%= post.readTime %></span>
+          </p>
+          <h3 class="card-title">
+            <a href="/blog/<%= post.slug %>"><%= post.title %></a>
+          </h3>
+          <p class="card-excerpt"><%= post.excerpt %></p>
+          <a href="/blog/<%= post.slug %>" class="read-more">Read article →</a>
+        </div>
+      </article>
+    <% }) %>
+
+  </div>
+</section>
+<% } %>
+
 <%- include('partials/bottom') %>

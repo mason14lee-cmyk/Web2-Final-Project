@@ -3,6 +3,7 @@ title: "This is just a sample blog post"
 author: "John Doe"
 description: "A nice description of this post"
 published: "2024-3-1"
+readTime: 5 min read
 ---
 # One hash tag for an H1 affect
 
@@ -36,4 +37,4 @@ The above code is a JavaScript sample.
 - Item 3
 
 ## Here's how you can put images in markdown:
-![This is an eagle](/images/eagle.png)
+![This is an Cat](/images/A-cat.jpg)

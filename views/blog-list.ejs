@@ -1,15 +1,57 @@
 <%- include('partials/top') %>
-<main>
+
+<section class="page-header">
   <h1>Blog Posts</h1>
-  <ul>
-  <% for (let i = 0; i < posts.length; i++) { %>
-      <li>
-         <a href="<%=posts[i].link%>"><%=posts[i].title%></a>
-         <p><%=posts[i].description%></p>
-         <p><%=posts[i].author%></p>
-         <p><%=posts[i].published%></p>
-      </li>
+  <p class="page-intro">Thoughts on design, development, and accessibility.</p>
+</section>
+
+<main>
+  <% if (posts && posts.length > 0) { %>
+
+    <section class="post-grid" aria-label="Blog post list">
+
+      <% posts.forEach(post => { %>
+        <article class="card">
+
+          <!-- Make the whole card clickable -->
+          <a href="<%= post.link %>" class="card-link">
+
+            <% if (post.image) { %>
+              <img src="<%= post.image %>" alt="">
+            <% } %>
+
+            <div class="card-content">
+
+              <p class="meta">
+                <span><%= post.category || 'General' %></span> •
+                <span><%= post.readTime || '5 min read' %></span>
+              </p>
+
+              <h2 class="card-title"><%= post.title %></h2>
+
+              <p class="card-excerpt">
+                <%= post.excerpt || post.description %>
+              </p>
+
+              <p class="blog-meta">
+                <span>By <%= post.author || 'Unknown' %></span> •
+                <span><%= post.published || '' %></span>
+              </p>
+
+              <span class="read-more">Read article →</span>
+
+            </div>
+
+          </a>
+
+        </article>
+      <% }) %>
+
+    </section>
+
+  <% } else { %>
+    <p>No blog posts found.</p>
   <% } %>
-  </ul>
 </main>
+
 <%- include('partials/bottom') %>
